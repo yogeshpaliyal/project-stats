@@ -21,7 +21,7 @@ Downloads, stars and traffic for all of my GitHub projects. Updated 2026-11-12 (
 | [Deepr](https://github.com/yogeshpaliyal/Deepr) | v1.0.29 | 7,372 | – | 302 | 0 |
 | [KeyPass](https://github.com/yogeshpaliyal/KeyPass) | v1.4.42 | 4,684 | – | 788 | 0 |
 | [skiff](https://github.com/yogeshpaliyal/skiff) | v1.11.1 | 629 | – | 47 | 0 |
-| [Halo](https://github.com/yogeshpaliyal/Halo) | v0.1.3 | 316 | – | 9 | 593 |
+| [Halo](https://github.com/yogeshpaliyal/Halo) | v0.1.3 | 318 | – | 9 | 593 |
 | [Marky](https://github.com/yogeshpaliyal/Marky) | – | 67 | – | 17 | 0 |
 | [dwr-sync](https://github.com/yogeshpaliyal/dwr-sync) | – | 2 | – | 1 | 0 |
 | [awesome-mobile-system-design](https://github.com/yogeshpaliyal/awesome-mobile-system-design) | – | – | – | 183 | 0 |
