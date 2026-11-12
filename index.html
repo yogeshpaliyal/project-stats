@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project stats</title>
+<meta name="description" content="Downloads, stars and traffic for GitHub projects.">
+<style>
+  :root {
+    --page: #f9f9f7; --surface: #fcfcfb; --ink: #0b0b0b; --ink2: #52514e; --muted: #8a8984;
+    --line: #e6e5e1; --grid: #ecebe7; --accent: #2a78d6; --other: #a3a29c; --hover: rgba(0,0,0,.04);
+    --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --s6:#008300; --s7:#6250d6;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --page: #0d0d0d; --surface: #1a1a19; --ink: #f0efec; --ink2: #c3c2b7; --muted: #8f8e88;
+      --line: #2c2c2a; --grid: #2a2a28; --accent: #3987e5; --other: #6f6e69; --hover: rgba(255,255,255,.05);
+      --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; --s7:#9085e9;
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--page); color: var(--ink);
+         font: 14px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 1120px; margin: 0 auto; padding: 28px 20px 60px; }
+  header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; margin-bottom: 18px; }
+  h1 { font-size: 24px; margin: 0; letter-spacing: -.01em; }
+  .sub { color: var(--ink2); }
+  .filters { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center;
+             padding: 12px 0; margin-bottom: 8px; background: var(--page); border-bottom: 1px solid var(--line); }
+  select, .seg button, label.chk { font: inherit; color: var(--ink); }
+  select { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 7px 10px; min-width: 170px; }
+  .seg { display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 2px; }
+  .seg button { border: 0; background: none; padding: 5px 11px; border-radius: 8px; cursor: pointer; color: var(--ink2); }
+  .seg button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+  label.chk { display: inline-flex; gap: 6px; align-items: center; color: var(--ink2); cursor: pointer; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin: 16px 0; }
+  .kpi { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+  .kpi .label { color: var(--ink2); font-size: 12.5px; }
+  .kpi .value { font-size: 26px; font-weight: 650; margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .kpi .note { color: var(--muted); font-size: 12px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 820px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 16px 10px; margin-bottom: 12px; min-width: 0; }
+  .card h2 { font-size: 14.5px; margin: 0 0 2px; }
+  .card .hint { color: var(--muted); font-size: 12px; margin-bottom: 8px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12.5px; color: var(--ink2); margin: 4px 0 6px; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px;
+                         background: var(--c); margin-right: 6px; vertical-align: -1px; }
+  svg { display: block; width: 100%; overflow: visible; }
+  svg text { fill: var(--ink2); font-size: 11px; }
+  .empty { color: var(--muted); padding: 30px 0; text-align: center; }
+  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); }
+  th { color: var(--ink2); font-weight: 600; font-size: 12.5px; }
+  td.n, th.n { text-align: right; }
+  tbody tr:hover { background: var(--hover); }
+  tbody tr.click { cursor: pointer; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .tip { position: fixed; pointer-events: none; z-index: 20; background: var(--surface); color: var(--ink);
+         border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; font-size: 12.5px;
+         box-shadow: 0 6px 24px rgba(0,0,0,.18); display: none; min-width: 140px; }
+  .tip b { display: block; margin-bottom: 4px; }
+  .tip .row { display: flex; justify-content: space-between; gap: 14px; }
+  .tip .row i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; background: var(--c); }
+  .table-wrap { overflow-x: auto; }
+  footer { color: var(--muted); font-size: 12px; margin-top: 24px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1 id="title">Project stats</h1>
+    <span class="sub" id="updated">Loading…</span>
+  </header>
+
+  <div class="filters" role="group" aria-label="Filters">
+    <select id="app" aria-label="Project"></select>
+    <div class="seg" id="range" role="group" aria-label="Date range">
+      <button data-v="7">7 days</button><button data-v="30">30 days</button>
+      <button data-v="90">90 days</button><button data-v="all">All</button>
+    </div>
+    <label class="chk"><input type="checkbox" id="pre"> Include pre-releases</label>
+  </div>
+
+  <section class="kpis" id="kpis"></section>
+
+  <div class="card">
+    <h2 id="dayTitle">New downloads per day</h2>
+    <div class="hint" id="dayHint"></div>
+    <div class="legend" id="dayLegend"></div>
+    <div id="dayChart"></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2 id="splitTitle">Downloads by version</h2>
+      <div class="hint" id="splitHint"></div>
+      <div id="splitChart"></div>
+    </div>
+    <div class="card">
+      <h2>Total downloads over time</h2>
+      <div class="hint">Running total, including downloads from before tracking started.</div>
+      <div class="legend" id="cumLegend"></div>
+      <div id="cumChart"></div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>GitHub page views per day</h2>
+      <div class="hint" id="viewsHint">Views and unique visitors of the repo pages.</div>
+      <div class="legend" id="viewsLegend"></div>
+      <div id="viewsChart"></div>
+    </div>
+    <div class="card">
+      <h2>Stars over time</h2>
+      <div class="hint">&nbsp;</div>
+      <div id="starsChart"></div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Top referrers</h2>
+      <div class="hint">Sites that sent visitors, latest 14-day window from GitHub.</div>
+      <div class="table-wrap" id="refs"></div>
+    </div>
+    <div class="card">
+      <h2>File types</h2>
+      <div class="hint">Downloads by file extension (APK, AAB, ZIP…), all time.</div>
+      <div id="typeChart"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Projects</h2>
+    <div class="hint">Tap a row to filter by that project.</div>
+    <div class="table-wrap" id="projects"></div>
+  </div>
+
+  <footer>
+    Collected every 6 hours from GitHub's APIs by the <code>Collect stats</code> workflow. Dates are UTC.
+    Downloads count files attached to GitHub releases. Made with
+    <a href="https://github.com/yogeshpaliyal/project-stats">project-stats</a>.
+  </footer>
+</main>
+<div class="tip" id="tip"></div>
+
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+const SLOTS = 7;
+
+// ---------- data loading ----------
+function parseCSV(text) {
+  const rows = []; let row = [], cur = "", q = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (q) {
+      if (ch === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else q = false; }
+      else cur += ch;
+    } else if (ch === '"') q = true;
+    else if (ch === ",") { row.push(cur); cur = ""; }
+    else if (ch === "\n") { row.push(cur); rows.push(row); row = []; cur = ""; }
+    else if (ch !== "\r") cur += ch;
+  }
+  if (cur || row.length) { row.push(cur); rows.push(row); }
+  const [head, ...body] = rows;
+  return body.filter((r) => r.length === head.length).map((r) => Object.fromEntries(head.map((h, i) => [h, r[i]])));
+}
+async function load(name) {
+  try {
+    const r = await fetch(`data/${name}?t=${Date.now() / 3.6e6 | 0}`);
+    return r.ok ? parseCSV(await r.text()) : [];
+  } catch { return []; }
+}
+
+// ---------- helpers ----------
+const fmt = (n) => (n >= 10000 ? (n / 1000).toFixed(n >= 1e5 ? 0 : 1).replace(/\.0$/, "") + "k" : Math.round(n).toLocaleString());
+const short = (repo) => repo.split("/")[1] || repo;
+const addDays = (iso, n) => { const d = new Date(iso + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+const dayLabel = (iso) => new Date(iso + "T00:00:00Z").toLocaleDateString(undefined, { day: "numeric", month: "short", timeZone: "UTC" });
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const color = (i) => (i < SLOTS ? `var(--s${i + 1})` : "var(--other)");
+function el(tag, attrs = {}, parent) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function niceMax(v) {
+  if (v <= 4) return Math.max(1, Math.ceil(v));
+  const p = Math.pow(10, Math.floor(Math.log10(v))), m = v / p;
+  return (m <= 1 ? 1 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 5 ? 5 : 10) * p;
+}
+
+// ---------- tooltip ----------
+const tip = $("tip");
+function showTip(e, title, rows) {
+  tip.innerHTML = `<b>${title}</b>` + rows.map((r) =>
+    `<div class="row"><span>${r.c ? `<i style="--c:${r.c}"></i>` : ""}${r.label}</span><span>${r.value}</span></div>`).join("");
+  tip.style.display = "block";
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = e.clientX + 14, y = e.clientY - h - 10;
+  if (x + w > innerWidth - 8) x = e.clientX - w - 14;
+  if (y < 8) y = e.clientY + 16;
+  tip.style.left = x + "px"; tip.style.top = y + "px";
+}
+const hideTip = () => (tip.style.display = "none");
+addEventListener("scroll", hideTip, { passive: true });
+
+// ---------- charts ----------
+function axes(svg, W, H, pad, max) {
+  // Whole-number steps: 10 -> 0,2,4,6,8,10 rather than 2.5s.
+  const ticks = [4, 5, 2, 3].find((t) => Number.isInteger(max / t)) || 4;
+  for (let i = 0; i <= ticks; i++) {
+    const v = (max / ticks) * i, y = H - pad.b - ((H - pad.t - pad.b) * i) / ticks;
+    el("line", { x1: pad.l, x2: W - pad.r, y1: y, y2: y, stroke: "var(--grid)", "stroke-width": 1 }, svg);
+    el("text", { x: pad.l - 6, y: y + 4, "text-anchor": "end" }, svg).textContent = fmt(v);
+  }
+}
+function xLabels(svg, days, x, H, pad) {
+  const step = Math.max(1, Math.ceil(days.length / 7));
+  days.forEach((d, i) => {
+    if (i % step && i !== days.length - 1) return;
+    if (i === days.length - 1 && i % step && (days.length - 1) % step < step / 2) return;
+    el("text", { x: x(i), y: H - pad.b + 16, "text-anchor": "middle" }, svg).textContent = dayLabel(d);
+  });
+}
+
+/** Stacked daily bars. stacks: [{label, color, values[]}] aligned to days. */
+function barChart(box, days, stacks) {
+  box.innerHTML = "";
+  if (!days.length) { box.innerHTML = '<div class="empty">No data in this range yet.</div>'; return; }
+  const W = Math.max(320, box.clientWidth), H = 230, pad = { t: 10, r: 8, b: 26, l: 40 };
+  const totals = days.map((_, i) => stacks.reduce((s, st) => s + st.values[i], 0));
+  const max = niceMax(Math.max(1, ...totals));
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, height: H, role: "img" }, box);
+  axes(svg, W, H, pad, max);
+  const slot = (W - pad.l - pad.r) / days.length, bw = Math.max(2, Math.min(28, slot * 0.72));
+  const x = (i) => pad.l + slot * i + slot / 2;
+  const y = (v) => H - pad.b - ((H - pad.t - pad.b) * v) / max;
+  days.forEach((d, i) => {
+    let acc = 0;
+    const visible = stacks.filter((st) => st.values[i] > 0);
+    visible.forEach((st, k) => {
+      const v = st.values[i], y0 = y(acc), y1 = y(acc + v);
+      const h = Math.max(1, y0 - y1 - (k > 0 ? 2 : 0)); // 2px gap between segments
+      const top = k === visible.length - 1;
+      const r = top ? Math.min(4, bw / 2, h) : 0;
+      const bx = x(i) - bw / 2, by = y0 - (k > 0 ? 2 : 0) - h;
+      el("path", { d: r ? `M${bx},${by + h}V${by + r}Q${bx},${by} ${bx + r},${by}H${bx + bw - r}Q${bx + bw},${by} ${bx + bw},${by + r}V${by + h}Z`
+                       : `M${bx},${by}h${bw}v${h}h${-bw}Z`, fill: st.color }, svg);
+      acc += v;
+    });
+    const hit = el("rect", { x: pad.l + slot * i, y: pad.t, width: slot, height: H - pad.t - pad.b, fill: "transparent" }, svg);
+    hit.addEventListener("mousemove", (e) => {
+      const rows = stacks.filter((st) => st.values[i] > 0).map((st) => ({ label: st.label, value: fmt(st.values[i]), c: st.color }));
+      if (rows.length !== 1) rows.push({ label: "Total", value: fmt(totals[i]) });
+      showTip(e, dayLabel(d), rows);
+    });
+    hit.addEventListener("mouseleave", hideTip);
+  });
+  xLabels(svg, days, x, H, pad);
+}
+
+/** Line chart with crosshair. series: [{label, color, values[]}] */
+function lineChart(box, days, series, { area = false } = {}) {
+  box.innerHTML = "";
+  if (days.length < 2) { box.innerHTML = '<div class="empty">Needs at least two days of data.</div>'; return; }
+  const W = Math.max(320, box.clientWidth), H = 210, pad = { t: 10, r: 10, b: 26, l: 40 };
+  const max = niceMax(Math.max(1, ...series.flatMap((s) => s.values)));
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, height: H, role: "img" }, box);
+  axes(svg, W, H, pad, max);
+  const x = (i) => pad.l + ((W - pad.l - pad.r) * i) / (days.length - 1);
+  const y = (v) => H - pad.b - ((H - pad.t - pad.b) * v) / max;
+  series.forEach((s) => {
+    const d = s.values.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join("");
+    if (area) el("path", { d: d + `L${x(days.length - 1)},${y(0)}L${x(0)},${y(0)}Z`, fill: s.color, opacity: 0.12 }, svg);
+    el("path", { d, fill: "none", stroke: s.color, "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }, svg);
+  });
+  xLabels(svg, days, x, H, pad);
+  const cross = el("line", { y1: pad.t, y2: H - pad.b, stroke: "var(--muted)", "stroke-dasharray": "3 3", visibility: "hidden" }, svg);
+  const dots = series.map((s) => el("circle", { r: 4.5, fill: s.color, stroke: "var(--surface)", "stroke-width": 2, visibility: "hidden" }, svg));
+  const hit = el("rect", { x: pad.l, y: pad.t, width: W - pad.l - pad.r, height: H - pad.t - pad.b, fill: "transparent" }, svg);
+  hit.addEventListener("mousemove", (e) => {
+    const r = svg.getBoundingClientRect(), px = ((e.clientX - r.left) / r.width) * W;
+    const i = Math.max(0, Math.min(days.length - 1, Math.round(((px - pad.l) / (W - pad.l - pad.r)) * (days.length - 1))));
+    cross.setAttribute("x1", x(i)); cross.setAttribute("x2", x(i)); cross.setAttribute("visibility", "visible");
+    dots.forEach((dt, k) => { dt.setAttribute("cx", x(i)); dt.setAttribute("cy", y(series[k].values[i])); dt.setAttribute("visibility", "visible"); });
+    showTip(e, dayLabel(days[i]), series.map((s) => ({ label: s.label, value: fmt(s.values[i]), c: s.color })));
+  });
+  hit.addEventListener("mouseleave", () => { hideTip(); cross.setAttribute("visibility", "hidden"); dots.forEach((d) => d.setAttribute("visibility", "hidden")); });
+}
+
+/** Horizontal bars. items: [{label, value, color?, sub?}] */
+function hbar(box, items, { onClick } = {}) {
+  box.innerHTML = "";
+  if (!items.length) { box.innerHTML = '<div class="empty">No downloads yet.</div>'; return; }
+  const W = Math.max(300, box.clientWidth), row = 30, pad = { l: 118, r: 52 };
+  const H = items.length * row + 4;
+  const max = Math.max(1, ...items.map((i) => i.value));
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, height: H, role: "img" }, box);
+  items.forEach((it, k) => {
+    const y = k * row + 4, w = Math.max(2, ((W - pad.l - pad.r) * it.value) / max);
+    const lab = el("text", { x: pad.l - 8, y: y + 15, "text-anchor": "end", style: "fill:var(--ink)" }, svg);
+    lab.textContent = it.label.length > 16 ? it.label.slice(0, 15) + "…" : it.label;
+    el("path", { d: `M${pad.l},${y + 4}h${w - 4}q4,0 4,4v6q0,4 -4,4h${-(w - 4)}Z`, fill: it.color || "var(--accent)" }, svg);
+    el("text", { x: pad.l + w + 6, y: y + 15 }, svg).textContent = fmt(it.value);
+    const hit = el("rect", { x: 0, y, width: W, height: row, fill: "transparent", style: onClick ? "cursor:pointer" : "" }, svg);
+    hit.addEventListener("mousemove", (e) => showTip(e, it.label, [{ label: "Downloads", value: fmt(it.value) }].concat(it.sub || [])));
+    hit.addEventListener("mouseleave", hideTip);
+    if (onClick) hit.addEventListener("click", () => onClick(it));
+  });
+}
+function legend(box, series) {
+  box.innerHTML = series.length > 1 ? series.map((s) => `<span style="--c:${s.color}">${s.label}</span>`).join("") : "";
+}
+
+// ---------- model ----------
+let D, state = { app: "all", range: "30", pre: false };
+
+function build(raw) {
+  const assets = raw.assets, pre = new Set();
+  assets.forEach((a) => a.prerelease === "true" && pre.add(a.repo + "\u0000" + a.tag));
+  const dates = [...new Set([...raw.daily, ...raw.rel, ...raw.traffic].map((r) => r.date))].sort();
+  const first = dates[0], last = dates[dates.length - 1];
+  const calendar = [];
+  for (let d = first; d && d <= last; d = addDays(d, 1)) calendar.push(d);
+
+  // Per (repo, tag): cumulative value per calendar day (carried forward), and new per day.
+  const series = {};
+  raw.rel.forEach((r) => {
+    const k = r.repo + "\u0000" + r.tag;
+    (series[k] ||= { repo: r.repo, tag: r.tag, pts: {} }).pts[r.date] = +r.downloads;
+  });
+  const repoStart = {};
+  raw.rel.forEach((r) => { if (!repoStart[r.repo] || r.date < repoStart[r.repo]) repoStart[r.repo] = r.date; });
+  const trackStart = Object.values(repoStart).sort()[0] || first;
+  Object.values(series).forEach((s) => {
+    s.pre = pre.has(s.repo + "\u0000" + s.tag);
+    s.cum = []; s.add = [];
+    let lastV = 0, seen = false;
+    const firstSeen = Object.keys(s.pts).sort()[0];
+    calendar.forEach((d) => {
+      let v = lastV;
+      if (d in s.pts) v = Math.max(lastV, s.pts[d]);
+      if (!seen && d === firstSeen) {
+        seen = true;
+        // A release that appeared after tracking began: all its downloads are new that day.
+        s.add.push(firstSeen > repoStart[s.repo] ? v : 0);
+      } else s.add.push(seen ? Math.max(0, v - lastV) : 0);
+      s.cum.push(v); lastV = v;
+    });
+    s.total = lastV;
+  });
+
+  const repos = [...new Set(raw.daily.map((r) => r.repo).concat(raw.rel.map((r) => r.repo)))];
+  const meta = Object.fromEntries(raw.repos.map((r) => [r.repo, r]));
+  const allTime = Object.fromEntries(repos.map((r) => [r, 0]));
+  Object.values(series).forEach((s) => (allTime[s.repo] += s.total));
+  // Colour follows the project, ranked by all-time downloads, never by the current filter.
+  const ranked = repos.slice().sort((a, b) => allTime[b] - allTime[a] || a.localeCompare(b));
+  const appColor = Object.fromEntries(ranked.map((r, i) => [r, color(i)]));
+
+  const stars = {};
+  raw.daily.forEach((r) => ((stars[r.repo] ||= {})[r.date] = +r.stars));
+  return { calendar, series: Object.values(series), repos: ranked, meta, appColor, allTime, stars,
+           traffic: raw.traffic, refs: raw.refs, assets, first: trackStart, last };
+}
+
+function rangeDays() {
+  const cal = D.calendar;
+  if (state.range === "all") return [0, cal.length];
+  return [Math.max(0, cal.length - +state.range), cal.length];
+}
+
+// ---------- render ----------
+function render() {
+  const [a, b] = rangeDays();
+  const days = D.calendar.slice(a, b);
+  const sel = state.app === "all" ? null : state.app;
+  const ser = D.series.filter((s) => (!sel || s.repo === sel) && (state.pre || !s.pre));
+  const sum = (arr) => arr.reduce((x, y) => x + y, 0);
+
+  // KPIs
+  const total = sum(ser.map((s) => s.total));
+  const inRange = sum(ser.map((s) => sum(s.add.slice(a, b))));
+  const repos = sel ? [sel] : D.repos;
+  const starNow = sum(repos.map((r) => { const s = D.stars[r] || {}; const k = Object.keys(s).sort().pop(); return k ? s[k] : 0; }));
+  const startDay = days[0];
+  const starThen = sum(repos.map((r) => { const s = D.stars[r] || {}; const k = Object.keys(s).filter((d) => d <= startDay).sort().pop(); return k ? s[k] : 0; }));
+  const tr = D.traffic.filter((t) => (!sel || t.repo === sel) && t.date >= days[0] && t.date <= days[days.length - 1]);
+  const views = sum(tr.map((t) => +t.views)), visitors = sum(tr.map((t) => +t.visitors));
+  const rangeName = state.range === "all" ? "since tracking started" : `last ${state.range} days`;
+  $("kpis").innerHTML = [
+    ["Total downloads", fmt(total), "all time"],
+    ["Downloads", (inRange ? "+" : "") + fmt(inRange), rangeName],
+    ["Stars", fmt(starNow), starNow - starThen ? `${starNow - starThen > 0 ? "+" : ""}${starNow - starThen} ${rangeName}` : rangeName],
+    ["Page views", D.traffic.length ? fmt(views) : "–", D.traffic.length ? `${fmt(visitors)} unique-day visitors` : "needs STATS_TOKEN"],
+  ].map(([l, v, n]) => `<div class="kpi"><div class="label">${l}</div><div class="value">${v}</div><div class="note">${n}</div></div>`).join("");
+
+  // Daily bars: by project, or by version when one project is picked.
+  let stacks;
+  if (!sel) {
+    const byRepo = {};
+    ser.forEach((s) => { const v = (byRepo[s.repo] ||= Array(days.length).fill(0)); s.add.slice(a, b).forEach((n, i) => (v[i] += n)); });
+    const order = D.repos.filter((r) => byRepo[r]);
+    stacks = order.slice(0, SLOTS).map((r) => ({ label: short(r), color: D.appColor[r], values: byRepo[r] }));
+    if (order.length > SLOTS) {
+      const o = Array(days.length).fill(0);
+      order.slice(SLOTS).forEach((r) => byRepo[r].forEach((n, i) => (o[i] += n)));
+      stacks.push({ label: "Other", color: "var(--other)", values: o });
+    }
+    $("dayTitle").textContent = "New downloads per day, by project";
+  } else {
+    stacks = versionStacks(ser, a, b);
+    $("dayTitle").textContent = `New downloads per day, ${short(sel)} by version`;
+  }
+  $("dayHint").textContent = `${rangeName[0].toUpperCase() + rangeName.slice(1)}. Tracking started ${dayLabel(D.first)}; downloads before that only appear in totals.`;
+  legend($("dayLegend"), stacks);
+  barChart($("dayChart"), days, stacks);
+
+  // Split: versions for one project, projects for all.
+  if (sel) {
+    $("splitTitle").textContent = `${short(sel)}: downloads by version`;
+    $("splitHint").textContent = "All-time downloads of each release, newest first.";
+    const vc = versionColors(D.series.filter((s) => s.repo === sel));
+    const order = ser.slice().sort((x, y) => tagOrder(y.tag) - tagOrder(x.tag) || y.total - x.total);
+    hbar($("splitChart"), order.filter((s) => s.total > 0).slice(0, 14).map((s) => ({
+      label: s.tag, value: s.total, color: vc[s.tag],
+      sub: [{ label: `In ${rangeName}`, value: "+" + fmt(sum(s.add.slice(a, b))) }].concat(s.pre ? [{ label: "Pre-release", value: "yes" }] : []),
+    })));
+  } else {
+    $("splitTitle").textContent = "Downloads by project";
+    $("splitHint").textContent = "All time. Tap a bar to see that project's versions.";
+    const per = {};
+    ser.forEach((s) => (per[s.repo] = (per[s.repo] || 0) + s.total));
+    hbar($("splitChart"), D.repos.filter((r) => per[r] > 0).slice(0, 14).map((r) => ({ label: short(r), value: per[r], color: D.appColor[r], repo: r })),
+      { onClick: (it) => setApp(it.repo) });
+  }
+
+  // Cumulative
+  let cum;
+  if (!sel) {
+    const byRepo = {};
+    ser.forEach((s) => { const v = (byRepo[s.repo] ||= Array(days.length).fill(0)); s.cum.slice(a, b).forEach((n, i) => (v[i] += n)); });
+    const order = D.repos.filter((r) => byRepo[r] && byRepo[r][days.length - 1] > 0);
+    cum = order.slice(0, SLOTS).map((r) => ({ label: short(r), color: D.appColor[r], values: byRepo[r] }));
+    if (order.length > SLOTS) {
+      const o = Array(days.length).fill(0);
+      order.slice(SLOTS).forEach((r) => byRepo[r].forEach((n, i) => (o[i] += n)));
+      cum.push({ label: "Other", color: "var(--other)", values: o });
+    }
+  } else {
+    const v = Array(days.length).fill(0);
+    ser.forEach((s) => s.cum.slice(a, b).forEach((n, i) => (v[i] += n)));
+    cum = [{ label: short(sel), color: D.appColor[sel], values: v }];
+  }
+  legend($("cumLegend"), cum);
+  lineChart($("cumChart"), days, cum);
+
+  // Views
+  if (D.traffic.length) {
+    const vv = days.map(() => 0), uu = days.map(() => 0), idx = Object.fromEntries(days.map((d, i) => [d, i]));
+    tr.forEach((t) => { const i = idx[t.date]; if (i !== undefined) { vv[i] += +t.views; uu[i] += +t.visitors; } });
+    const vs = [{ label: "Views", color: "var(--s1)", values: vv }, { label: "Unique visitors", color: "var(--s2)", values: uu }];
+    legend($("viewsLegend"), vs);
+    lineChart($("viewsChart"), days, vs, { area: false });
+  } else {
+    $("viewsLegend").innerHTML = "";
+    $("viewsChart").innerHTML = '<div class="empty">Add a <code>STATS_TOKEN</code> secret to collect views.</div>';
+  }
+
+  // Stars
+  const sv = days.map((d) => sum(repos.map((r) => { const s = D.stars[r] || {}; const k = Object.keys(s).filter((x) => x <= d).sort().pop(); return k ? s[k] : 0; })));
+  lineChart($("starsChart"), days, [{ label: "Stars", color: "var(--s4)", values: sv }], { area: true });
+
+  // Referrers: latest snapshot per repo.
+  const latestRef = {};
+  D.refs.forEach((r) => { if (!latestRef[r.repo] || r.date > latestRef[r.repo]) latestRef[r.repo] = r.date; });
+  const agg = {};
+  D.refs.filter((r) => (!sel || r.repo === sel) && r.date === latestRef[r.repo]).forEach((r) => {
+    const g = (agg[r.referrer] ||= { views: 0, visitors: 0 }); g.views += +r.views; g.visitors += +r.visitors;
+  });
+  const refRows = Object.entries(agg).sort((x, y) => y[1].views - x[1].views).slice(0, 10);
+  $("refs").innerHTML = refRows.length
+    ? `<table><thead><tr><th>Site</th><th class="n">Views</th><th class="n">Visitors</th></tr></thead><tbody>${
+        refRows.map(([k, v]) => `<tr><td>${esc(k)}</td><td class="n">${fmt(v.views)}</td><td class="n">${fmt(v.visitors)}</td></tr>`).join("")}</tbody></table>`
+    : `<div class="empty">${D.traffic.length ? "No referrers yet." : "Needs STATS_TOKEN."}</div>`;
+
+  // File types
+  const types = {};
+  D.assets.filter((x) => (!sel || x.repo === sel) && (state.pre || x.prerelease !== "true")).forEach((x) => {
+    const m = x.name.toLowerCase().match(/\.(apk|aab|zip|tar\.gz|tgz|dmg|exe|msi|deb|rpm|appimage|jar|whl|ipa|pkg)$/);
+    const t = m ? m[1].toUpperCase() : "Other"; types[t] = (types[t] || 0) + +x.max_count;
+  });
+  hbar($("typeChart"), Object.entries(types).filter(([, v]) => v > 0).sort((x, y) => y[1] - x[1]).map(([k, v], i) => ({ label: k, value: v, color: color(i) })));
+
+  // Projects table
+  const rowsHtml = D.repos.map((r) => {
+    const m = D.meta[r] || {}, mine = D.series.filter((s) => s.repo === r && (state.pre || !s.pre));
+    const tot = sum(mine.map((s) => s.total)), add = sum(mine.map((s) => sum(s.add.slice(a, b))));
+    const st = D.stars[r] || {}, k = Object.keys(st).sort().pop();
+    const vw = sum(D.traffic.filter((t) => t.repo === r && t.date >= days[0]).map((t) => +t.views));
+    return { r, m, tot, add, star: k ? st[k] : 0, vw };
+  }).filter((x) => x.tot || x.star || x.vw);
+  $("projects").innerHTML = `<table><thead><tr><th>Project</th><th>Latest</th><th class="n">Downloads</th><th class="n">${
+      state.range === "all" ? "Tracked" : state.range + " d"}</th><th class="n">Stars</th><th class="n">Views</th></tr></thead><tbody>${
+    rowsHtml.map((x) => `<tr class="click" data-repo="${esc(x.r)}"${x.r === sel ? ' style="background:var(--hover)"' : ""}>
+      <td><span style="display:inline-block;width:9px;height:9px;border-radius:3px;background:${D.appColor[x.r]};margin-right:8px"></span><a href="${esc(x.m.url || "https://github.com/" + x.r)}" target="_blank" rel="noopener">${esc(short(x.r))}</a>${x.m.private === "true" ? " 🔒" : ""}</td>
+      <td>${esc(x.m.latest_release || "–")}</td><td class="n">${x.tot ? fmt(x.tot) : "–"}</td><td class="n">${x.add ? "+" + fmt(x.add) : "–"}</td>
+      <td class="n">${x.star}</td><td class="n">${D.traffic.length ? fmt(x.vw) : "–"}</td></tr>`).join("")}</tbody></table>`;
+  document.querySelectorAll("#projects tr.click").forEach((tr) => tr.addEventListener("click", (e) => {
+    if (e.target.closest("a")) return;
+    setApp(tr.dataset.repo === sel ? "all" : tr.dataset.repo);
+  }));
+}
+
+function tagOrder(tag) {
+  const m = tag.match(/(\d+)\.(\d+)(?:\.(\d+))?/);
+  return m ? (+m[1]) * 1e6 + (+m[2]) * 1e3 + (+(m[3] || 0)) : -1;
+}
+function versionColors(list) {
+  // Newest versions get the first slots; older ones share "Other". Fixed per project.
+  const order = list.slice().sort((x, y) => tagOrder(y.tag) - tagOrder(x.tag) || y.total - x.total);
+  return Object.fromEntries(order.map((s, i) => [s.tag, color(i)]));
+}
+function versionStacks(ser, a, b) {
+  const vc = versionColors(D.series.filter((s) => s.repo === ser[0]?.repo));
+  const order = ser.slice().sort((x, y) => tagOrder(y.tag) - tagOrder(x.tag) || y.total - x.total);
+  const n = b - a, out = [], other = Array(n).fill(0);
+  let otherUsed = false;
+  order.forEach((s) => {
+    const vals = s.add.slice(a, b);
+    if (vc[s.tag] === "var(--other)") { vals.forEach((v, i) => (other[i] += v)); otherUsed ||= vals.some(Boolean); }
+    else if (vals.some(Boolean)) out.push({ label: s.tag, color: vc[s.tag], values: vals });
+  });
+  if (otherUsed) out.push({ label: "Older versions", color: "var(--other)", values: other });
+  return out;
+}
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+// ---------- state & wiring ----------
+function readHash() {
+  const p = new URLSearchParams(location.hash.slice(1));
+  if (p.get("app")) state.app = p.get("app");
+  if (["7", "30", "90", "all"].includes(p.get("range"))) state.range = p.get("range");
+  state.pre = p.get("pre") === "1";
+}
+function writeHash() {
+  const p = new URLSearchParams();
+  if (state.app !== "all") p.set("app", state.app);
+  if (state.range !== "30") p.set("range", state.range);
+  if (state.pre) p.set("pre", "1");
+  history.replaceState(null, "", p.toString() ? "#" + p : location.pathname);
+}
+function syncControls() {
+  $("app").value = state.app;
+  document.querySelectorAll("#range button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.v === state.range)));
+  $("pre").checked = state.pre;
+}
+function setApp(app) { state.app = app; syncControls(); writeHash(); render(); scrollTo({ top: 0, behavior: "smooth" }); }
+
+(async () => {
+  const [daily, rel, assets, repos, traffic, refs] = await Promise.all(
+    ["daily.csv", "releases_daily.csv", "assets.csv", "repos.csv", "traffic.csv", "referrers.csv"].map(load));
+  if (!daily.length && !rel.length) {
+    $("updated").textContent = "No data yet. Run the Collect stats workflow once.";
+    return;
+  }
+  D = build({ daily, rel, assets, repos, traffic, refs });
+  const owner = (D.repos[0] || "").split("/")[0];
+  if (owner) { $("title").textContent = `${owner}'s project stats`; document.title = `${owner} · project stats`; }
+  const n = D.repos.length;
+  $("updated").textContent = `Updated ${dayLabel(D.last)} · ${n} project${n === 1 ? "" : "s"}`;
+  $("app").innerHTML = `<option value="all">All projects</option>` +
+    D.repos.filter((r) => D.allTime[r] > 0 || (D.stars[r] && Object.values(D.stars[r]).some(Boolean)))
+      .map((r) => `<option value="${esc(r)}">${esc(short(r))}</option>`).join("");
+  readHash();
+  if (state.app !== "all" && !D.repos.includes(state.app)) state.app = "all";
+  syncControls();
+  $("app").addEventListener("change", (e) => setApp(e.target.value));
+  document.querySelectorAll("#range button").forEach((b) => b.addEventListener("click", () => { state.range = b.dataset.v; syncControls(); writeHash(); render(); }));
+  $("pre").addEventListener("change", (e) => { state.pre = e.target.checked; writeHash(); render(); });
+  render();
+  let t; addEventListener("resize", () => { clearTimeout(t); t = setTimeout(render, 150); });
+})();
+</script>
+</body>
+</html>

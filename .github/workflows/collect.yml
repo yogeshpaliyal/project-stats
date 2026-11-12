@@ -1,0 +1,89 @@
+name: Collect stats
+
+# Every 6 hours: snapshot release downloads, stars and (with STATS_TOKEN) traffic for
+# every repo the owner has, save them to the `data` branch, then publish the website.
+# Code lives on main; numbers live on `data`, so "Use this template" copies no data.
+on:
+  schedule:
+    - cron: "23 */6 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["index.html", "projects.json", ".github/**"]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: collect-stats
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v5
+        with:
+          path: code
+
+      - name: Check out (or create) the data branch
+        run: |
+          git clone --quiet --no-checkout "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" data
+          cd data
+          if git ls-remote --exit-code --heads origin data >/dev/null; then
+            git fetch --quiet --depth=1 origin data
+            git switch --quiet -c data FETCH_HEAD
+          else
+            git switch --quiet --orphan data
+          fi
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install matplotlib
+        run: pip install --quiet matplotlib==3.9.2
+
+      - name: Collect
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          STATS_TOKEN: ${{ secrets.STATS_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+        run: python3 code/.github/scripts/collect.py code/projects.json data
+
+      - name: Draw README charts on the data branch
+        run: python3 code/.github/scripts/render.py data
+
+      - name: Save to the data branch
+        working-directory: data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && { echo "No changes"; exit 0; }
+          git commit -q -m "Stats $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push --quiet origin HEAD:data
+
+      - name: Build the website
+        run: |
+          mkdir -p site/data
+          cp code/index.html site/
+          cp data/*.csv site/data/
+          touch site/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+
+  deploy:
+    needs: collect
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
