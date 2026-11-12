@@ -9,7 +9,8 @@ reads GitHub's own APIs every 6 hours and publishes a static site on GitHub Page
 - Every repo you own is picked up automatically, new ones included.
 - Filter by project and date range (7, 30, 90 days, all).
 - New downloads per day, stacked by project, or by version when you pick one project.
-- Downloads by version, by file type (APK, AAB, ZIP…), running totals, stars over time.
+- Downloads by version and by file type (APK, AAB, ZIP…), running totals, stars over time.
+- A release timeline: every release at its publish date with its all-time downloads.
 - Page views, unique visitors and top referrers (with an optional token).
 - Light and dark mode, works on phones. Filters live in the URL, so views are shareable.
 
@@ -23,10 +24,10 @@ reads GitHub's own APIs every 6 hours and publishes a static site on GitHub Page
 That's it. Your site appears at `https://<you>.github.io/<repo>/` after the first run,
 and updates every 6 hours.
 
-### Optional: views, visitors, referrers and private repos
+### Optional: views, referrers, full star history and private repos
 
-GitHub only shares traffic with people who can administer a repo, so the built-in
-Actions token can't read it. To add it:
+GitHub only shares traffic with people who can administer a repo, and the built-in
+Actions token can't list another repo's stargazers. A token of your own fixes both:
 
 1. Create a [fine-grained token](https://github.com/settings/personal-access-tokens/new):
    - **Repository access:** All repositories
@@ -34,7 +35,8 @@ Actions token can't read it. To add it:
 2. In this repo: **Settings → Secrets and variables → Actions → New repository secret**,
    name it `STATS_TOKEN`, paste the token.
 
-With the token, private repos are included too. Their names and numbers will show on
+With the token, the first run also rebuilds each repo's star history back to its first
+star, and private repos are included too. Their names and numbers will show on
 your public site, so add any you'd rather hide to `exclude` below.
 
 GitHub keeps only 14 days of traffic, so the workflow stores every day it sees. History

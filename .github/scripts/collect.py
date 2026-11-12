@@ -162,7 +162,8 @@ def main():
 
         # Full star history, once per repo: GitHub dates every current star. Later days come
         # from daily.csv. (Stars that were removed can't be seen, so old counts may be a bit low.)
-        if full not in backfilled and info["stargazers_count"] > 0:
+        # The Actions token isn't allowed to list stargazers of other repos, so this needs STATS_TOKEN.
+        if pat and full not in backfilled and info["stargazers_count"] > 0:
             try:
                 stars = api.paged(f"/repos/{full}/stargazers", "application/vnd.github.star+json")
                 per_day = {}
@@ -238,6 +239,8 @@ def main():
         upsert("traffic.csv", ["date", "repo", "views", "visitors", "clones"], ["date", "repo"], traffic)
     if refs:
         upsert("referrers.csv", ["date", "repo", "referrer", "views", "visitors"], ["date", "repo", "referrer"], refs)
+    if not pat:
+        print("::notice::Add a STATS_TOKEN secret to backfill full star history and collect traffic")
     print(f"Done, {api.calls} API calls")
 
 
