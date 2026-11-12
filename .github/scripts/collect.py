@@ -16,6 +16,7 @@ import datetime as dt
 import json
 import os
 import sys
+import time
 import urllib.error
 import urllib.request
 
@@ -30,16 +31,34 @@ class Api:
         self.token = token
         self.calls = 0
 
-    def get(self, path, accept="application/vnd.github+json"):
-        self.calls += 1
-        req = urllib.request.Request(API + path, headers={
+    def request(self, path, accept):
+        return urllib.request.Request(API + path, headers={
             "Accept": accept,
             "Authorization": f"Bearer {self.token}",
             "X-GitHub-Api-Version": "2022-11-28",
             "User-Agent": "project-stats",
         })
-        with urllib.request.urlopen(req, timeout=30) as r:
-            return json.load(r)
+
+    def get(self, path, accept="application/vnd.github+json"):
+        for attempt in range(4):
+            self.calls += 1
+            try:
+                with urllib.request.urlopen(self.request(path, accept), timeout=30) as r:
+                    return json.load(r)
+            except urllib.error.HTTPError as e:
+                body = e.read().decode("utf-8", "replace")[:300]
+                limited = e.code in (403, 429) and ("rate limit" in body.lower() or e.headers.get("Retry-After"))
+                if limited and attempt < 3:
+                    wait = int(e.headers.get("Retry-After") or 0) or 60 * (attempt + 1)
+                    reset = e.headers.get("X-RateLimit-Reset")
+                    if e.headers.get("X-RateLimit-Remaining") == "0" and reset:
+                        wait = max(wait, int(reset) - int(time.time()) + 2)
+                    if wait <= 600:
+                        print(f"Rate limited on {path}, waiting {wait}s")
+                        time.sleep(wait)
+                        continue
+                e.msg = f"{e.msg}: {body}"
+                raise
 
     def paged(self, path, accept="application/vnd.github+json"):
         out, page = [], 1
@@ -157,7 +176,7 @@ def main():
                     star_hist.append({"repo": full, "date": d, "stars": total})
                 backfilled.add(full)
             except urllib.error.HTTPError as e:
-                print(f"::warning::{full}: star history failed ({e.code})")
+                print(f"::warning::{full}: star history failed ({e.code} {e.msg})")
 
         stable = [r for r in releases if not r.get("draft") and not r.get("prerelease")]
         latest.append({
