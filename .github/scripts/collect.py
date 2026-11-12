@@ -30,10 +30,10 @@ class Api:
         self.token = token
         self.calls = 0
 
-    def get(self, path):
+    def get(self, path, accept="application/vnd.github+json"):
         self.calls += 1
         req = urllib.request.Request(API + path, headers={
-            "Accept": "application/vnd.github+json",
+            "Accept": accept,
             "Authorization": f"Bearer {self.token}",
             "X-GitHub-Api-Version": "2022-11-28",
             "User-Agent": "project-stats",
@@ -41,11 +41,11 @@ class Api:
         with urllib.request.urlopen(req, timeout=30) as r:
             return json.load(r)
 
-    def paged(self, path):
+    def paged(self, path, accept="application/vnd.github+json"):
         out, page = [], 1
         while True:
             sep = "&" if "?" in path else "?"
-            items = self.get(f"{path}{sep}per_page=100&page={page}")
+            items = self.get(f"{path}{sep}per_page=100&page={page}", accept)
             out += items
             if len(items) < 100:
                 return out
@@ -114,7 +114,9 @@ def main():
     print(f"Tracking {len(repos)} repos")
 
     assets = {r["asset_id"]: r for r in read_rows("assets.csv")}
-    daily, traffic, refs, latest = [], [], [], []
+    daily, traffic, refs, latest, rel_rows = [], [], [], [], []
+    star_hist = read_rows("stars_history.csv")
+    backfilled = {r["repo"] for r in star_hist}
     traffic_ok = bool(pat)
 
     for full, info in sorted(repos.items()):
@@ -132,6 +134,31 @@ def main():
                     "prerelease": str(bool(rel.get("prerelease"))).lower(),
                     "max_count": max(prev, a["download_count"]),
                 }
+        for rel in releases:
+            if rel.get("draft"):
+                continue
+            rel_rows.append({"repo": full, "tag": rel["tag_name"],
+                             "published_at": (rel.get("published_at") or rel.get("created_at") or "")[:10],
+                             "prerelease": str(bool(rel.get("prerelease"))).lower()})
+
+        # Full star history, once per repo: GitHub dates every current star. Later days come
+        # from daily.csv. (Stars that were removed can't be seen, so old counts may be a bit low.)
+        if full not in backfilled and info["stargazers_count"] > 0:
+            try:
+                stars = api.paged(f"/repos/{full}/stargazers", "application/vnd.github.star+json")
+                per_day = {}
+                for st in stars:
+                    d = (st.get("starred_at") or "")[:10]
+                    if d:
+                        per_day[d] = per_day.get(d, 0) + 1
+                total = 0
+                for d in sorted(per_day):
+                    total += per_day[d]
+                    star_hist.append({"repo": full, "date": d, "stars": total})
+                backfilled.add(full)
+            except urllib.error.HTTPError as e:
+                print(f"::warning::{full}: star history failed ({e.code})")
+
         stable = [r for r in releases if not r.get("draft") and not r.get("prerelease")]
         latest.append({
             "repo": full,
@@ -183,6 +210,9 @@ def main():
         per_tag[k] = per_tag.get(k, 0) + int(a["max_count"])
     upsert("releases_daily.csv", ["date", "repo", "tag", "downloads"], ["date", "repo", "tag"],
            [{"date": today, "repo": r, "tag": t, "downloads": n} for (r, t), n in per_tag.items()])
+    write_rows("releases.csv", ["repo", "tag", "published_at", "prerelease"], rel_rows)
+    write_rows("stars_history.csv", ["repo", "date", "stars"],
+               sorted(star_hist, key=lambda r: (r["repo"], r["date"])))
     write_rows("repos.csv", ["repo", "latest_release", "released_at", "private", "description", "url"], latest)
     if traffic:
         # GitHub keeps only 14 days of traffic, so every day seen is stored.
