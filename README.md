@@ -4,7 +4,7 @@ Downloads, stars and traffic for all of my GitHub projects. Updated 2026-11-13 (
 
 | Total downloads | Last 7 days | Stars | Page views, last 14 days |
 | --- | --- | --- | --- |
-| **13.2k** | – | 1,761 | 593 |
+| **13.2k** | – | 1,763 | 593 |
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="charts/downloads-over-time-dark.svg"><img alt="Total downloads over time per project" src="charts/downloads-over-time-light.svg" width="100%"></picture>
 
@@ -18,18 +18,18 @@ Downloads, stars and traffic for all of my GitHub projects. Updated 2026-11-13 (
 
 | Project | Latest release | Downloads | Last 7 days | Stars | Views (14 d) |
 | --- | --- | --: | --: | --: | --: |
-| [Deepr](https://github.com/yogeshpaliyal/Deepr) | v1.0.29 | 7,388 | – | 302 | 0 |
+| [Deepr](https://github.com/yogeshpaliyal/Deepr) | v1.0.29 | 7,391 | – | 302 | 0 |
 | [KeyPass](https://github.com/yogeshpaliyal/KeyPass) | v1.4.42 | 4,689 | – | 788 | 0 |
-| [skiff](https://github.com/yogeshpaliyal/skiff) | v1.11.1 | 661 | – | 53 | 0 |
-| [Halo](https://github.com/yogeshpaliyal/Halo) | v0.1.3 | 384 | – | 12 | 593 |
+| [skiff](https://github.com/yogeshpaliyal/skiff) | v1.11.1 | 669 | – | 54 | 0 |
+| [Halo](https://github.com/yogeshpaliyal/Halo) | v0.1.4 | 417 | – | 12 | 593 |
 | [Marky](https://github.com/yogeshpaliyal/Marky) | – | 67 | – | 17 | 0 |
 | [dwr-sync](https://github.com/yogeshpaliyal/dwr-sync) | – | 3 | – | 1 | 0 |
 | [awesome-mobile-system-design](https://github.com/yogeshpaliyal/awesome-mobile-system-design) | – | – | – | 183 | 0 |
 | [android-resources](https://github.com/yogeshpaliyal/android-resources) | – | – | – | 71 | 0 |
 | [awesome-android-tooling](https://github.com/yogeshpaliyal/awesome-android-tooling) | – | – | – | 71 | 0 |
 | [Speld](https://github.com/yogeshpaliyal/Speld) | v1.0.3 | – | – | 41 | 0 |
+| [benchmarkify](https://github.com/yogeshpaliyal/benchmarkify) | – | – | – | 23 | 0 |
 | [Android-Universal-Recycler-View-Adapter](https://github.com/yogeshpaliyal/Android-Universal-Recycler-View-Adapter) | 3.0.1 | – | – | 22 | 0 |
-| [benchmarkify](https://github.com/yogeshpaliyal/benchmarkify) | – | – | – | 22 | 0 |
 | [upload-indus-appstore](https://github.com/yogeshpaliyal/upload-indus-appstore) | v0.0.7 | – | – | 20 | 0 |
 | [Play-With-Compose](https://github.com/yogeshpaliyal/Play-With-Compose) | – | – | – | 14 | 0 |
 | [Android-File-Picker-With-Scoped-Storage](https://github.com/yogeshpaliyal/Android-File-Picker-With-Scoped-Storage) | – | – | – | 12 | 0 |
