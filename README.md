@@ -1,10 +1,10 @@
 # Project stats
 
-Downloads, stars and traffic for all of my GitHub projects. Updated 2026-11-13 (UTC) by the `Collect stats` workflow from GitHub's APIs.
+Downloads, stars and traffic for all of my GitHub projects. Updated 2026-11-14 (UTC) by the `Collect stats` workflow from GitHub's APIs.
 
 | Total downloads | Last 7 days | Stars | Page views, last 14 days |
 | --- | --- | --- | --- |
-| **13.2k** | – | 1,763 | 593 |
+| **13.3k** | – | 1,764 | 593 |
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="charts/downloads-over-time-dark.svg"><img alt="Total downloads over time per project" src="charts/downloads-over-time-light.svg" width="100%"></picture>
 
@@ -18,12 +18,13 @@ Downloads, stars and traffic for all of my GitHub projects. Updated 2026-11-13 (
 
 | Project | Latest release | Downloads | Last 7 days | Stars | Views (14 d) |
 | --- | --- | --: | --: | --: | --: |
-| [Deepr](https://github.com/yogeshpaliyal/Deepr) | v1.0.29 | 7,391 | – | 302 | 0 |
-| [KeyPass](https://github.com/yogeshpaliyal/KeyPass) | v1.4.42 | 4,689 | – | 788 | 0 |
-| [skiff](https://github.com/yogeshpaliyal/skiff) | v1.11.1 | 669 | – | 54 | 0 |
-| [Halo](https://github.com/yogeshpaliyal/Halo) | v0.1.4 | 417 | – | 12 | 593 |
+| [Deepr](https://github.com/yogeshpaliyal/Deepr) | v1.0.29 | 7,398 | – | 302 | 0 |
+| [KeyPass](https://github.com/yogeshpaliyal/KeyPass) | v1.4.42 | 4,692 | – | 788 | 0 |
+| [skiff](https://github.com/yogeshpaliyal/skiff) | v1.11.1 | 671 | – | 54 | 0 |
+| [Halo](https://github.com/yogeshpaliyal/Halo) | v0.1.5 | 430 | – | 13 | 593 |
 | [Marky](https://github.com/yogeshpaliyal/Marky) | – | 67 | – | 17 | 0 |
 | [dwr-sync](https://github.com/yogeshpaliyal/dwr-sync) | – | 3 | – | 1 | 0 |
+| [chain-reaction](https://github.com/yogeshpaliyal/chain-reaction) | v0.0.1-alpha01 | 1 | – | 3 | 0 |
 | [awesome-mobile-system-design](https://github.com/yogeshpaliyal/awesome-mobile-system-design) | – | – | – | 183 | 0 |
 | [android-resources](https://github.com/yogeshpaliyal/android-resources) | – | – | – | 71 | 0 |
 | [awesome-android-tooling](https://github.com/yogeshpaliyal/awesome-android-tooling) | – | – | – | 71 | 0 |
@@ -52,7 +53,6 @@ Downloads, stars and traffic for all of my GitHub projects. Updated 2026-11-13 (
 | [Android-Navigation-Component](https://github.com/yogeshpaliyal/Android-Navigation-Component) | – | – | – | 3 | 0 |
 | [Android-Paging](https://github.com/yogeshpaliyal/Android-Paging) | – | – | – | 3 | 0 |
 | [browser-ai](https://github.com/yogeshpaliyal/browser-ai) | – | – | – | 3 | 0 |
-| [chain-reaction](https://github.com/yogeshpaliyal/chain-reaction) | v0.0.1-alpha01 | – | – | 3 | 0 |
 | [Flutter-Practice](https://github.com/yogeshpaliyal/Flutter-Practice) | – | – | – | 3 | 0 |
 | [LogHelper](https://github.com/yogeshpaliyal/LogHelper) | – | – | – | 3 | 0 |
 | [Movie-Show-Case](https://github.com/yogeshpaliyal/Movie-Show-Case) | v1.0.9 | – | – | 3 | 0 |
