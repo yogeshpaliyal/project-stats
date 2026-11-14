@@ -4,7 +4,7 @@ Downloads, stars and traffic for all of my GitHub projects. Updated 2026-11-14 (
 
 | Total downloads | Last 7 days | Stars | Page views, last 14 days |
 | --- | --- | --- | --- |
-| **13.3k** | – | 1,764 | 593 |
+| **13.3k** | – | 1,765 | 593 |
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="charts/downloads-over-time-dark.svg"><img alt="Total downloads over time per project" src="charts/downloads-over-time-light.svg" width="100%"></picture>
 
@@ -18,12 +18,13 @@ Downloads, stars and traffic for all of my GitHub projects. Updated 2026-11-14 (
 
 | Project | Latest release | Downloads | Last 7 days | Stars | Views (14 d) |
 | --- | --- | --: | --: | --: | --: |
-| [Deepr](https://github.com/yogeshpaliyal/Deepr) | v1.0.29 | 7,398 | – | 302 | 0 |
-| [KeyPass](https://github.com/yogeshpaliyal/KeyPass) | v1.4.42 | 4,692 | – | 788 | 0 |
-| [skiff](https://github.com/yogeshpaliyal/skiff) | v1.11.1 | 671 | – | 54 | 0 |
-| [Halo](https://github.com/yogeshpaliyal/Halo) | v0.1.5 | 430 | – | 13 | 593 |
+| [Deepr](https://github.com/yogeshpaliyal/Deepr) | v1.0.29 | 7,409 | – | 302 | 0 |
+| [KeyPass](https://github.com/yogeshpaliyal/KeyPass) | v1.4.42 | 4,697 | – | 788 | 0 |
+| [skiff](https://github.com/yogeshpaliyal/skiff) | v1.11.1 | 673 | – | 55 | 0 |
+| [Halo](https://github.com/yogeshpaliyal/Halo) | v0.1.6 | 456 | – | 13 | 593 |
 | [Marky](https://github.com/yogeshpaliyal/Marky) | – | 67 | – | 17 | 0 |
 | [dwr-sync](https://github.com/yogeshpaliyal/dwr-sync) | – | 3 | – | 1 | 0 |
+| [Whatsapp-scheduler](https://github.com/yogeshpaliyal/Whatsapp-scheduler) | – | 3 | – | 0 | 0 |
 | [chain-reaction](https://github.com/yogeshpaliyal/chain-reaction) | v0.0.1-alpha01 | 1 | – | 3 | 0 |
 | [awesome-mobile-system-design](https://github.com/yogeshpaliyal/awesome-mobile-system-design) | – | – | – | 183 | 0 |
 | [android-resources](https://github.com/yogeshpaliyal/android-resources) | – | – | – | 71 | 0 |
