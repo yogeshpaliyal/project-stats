@@ -4,7 +4,7 @@ Downloads, stars and traffic for all of my GitHub projects. Updated 2026-11-18 (
 
 | Total downloads | Last 7 days | Stars | Page views, last 14 days |
 | --- | --- | --- | --- |
-| **14k** | +340 | 1,784 | 593 |
+| **14k** | +354 | 1,784 | 593 |
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="charts/downloads-over-time-dark.svg"><img alt="Total downloads over time per project" src="charts/downloads-over-time-light.svg" width="100%"></picture>
 
@@ -18,10 +18,10 @@ Downloads, stars and traffic for all of my GitHub projects. Updated 2026-11-18 (
 
 | Project | Latest release | Downloads | Last 7 days | Stars | Views (14 d) |
 | --- | --- | --: | --: | --: | --: |
-| [Deepr](https://github.com/yogeshpaliyal/Deepr) | v1.0.30 | 7,772 | – | 302 | 0 |
-| [KeyPass](https://github.com/yogeshpaliyal/KeyPass) | v1.4.42 | 4,713 | – | 789 | 0 |
-| [skiff](https://github.com/yogeshpaliyal/skiff) | v1.11.1 | 883 | – | 70 | 0 |
-| [Halo](https://github.com/yogeshpaliyal/Halo) | v0.1.7 | 531 | +340 | 15 | 593 |
+| [Deepr](https://github.com/yogeshpaliyal/Deepr) | v1.0.30 | 7,793 | – | 302 | 0 |
+| [KeyPass](https://github.com/yogeshpaliyal/KeyPass) | v1.4.42 | 4,715 | – | 789 | 0 |
+| [skiff](https://github.com/yogeshpaliyal/skiff) | v1.11.1 | 893 | – | 70 | 0 |
+| [Halo](https://github.com/yogeshpaliyal/Halo) | v0.1.7 | 545 | +354 | 15 | 593 |
 | [Marky](https://github.com/yogeshpaliyal/Marky) | – | 67 | – | 17 | 0 |
 | [Whatsapp-scheduler](https://github.com/yogeshpaliyal/Whatsapp-scheduler) | – | 4 | – | 0 | 0 |
 | [dwr-sync](https://github.com/yogeshpaliyal/dwr-sync) | – | 3 | – | 1 | 0 |
