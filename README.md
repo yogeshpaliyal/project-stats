@@ -1,10 +1,10 @@
 # Project stats
 
-Downloads, stars and traffic for all of my GitHub projects. Updated 2026-11-18 (UTC) by the `Collect stats` workflow from GitHub's APIs.
+Downloads, stars and traffic for all of my GitHub projects. Updated 2026-11-19 (UTC) by the `Collect stats` workflow from GitHub's APIs.
 
 | Total downloads | Last 7 days | Stars | Page views, last 14 days |
 | --- | --- | --- | --- |
-| **14k** | +354 | 1,784 | 593 |
+| **14k** | +890 | 1,784 | 593 |
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="charts/downloads-over-time-dark.svg"><img alt="Total downloads over time per project" src="charts/downloads-over-time-light.svg" width="100%"></picture>
 
@@ -18,14 +18,14 @@ Downloads, stars and traffic for all of my GitHub projects. Updated 2026-11-18 (
 
 | Project | Latest release | Downloads | Last 7 days | Stars | Views (14 d) |
 | --- | --- | --: | --: | --: | --: |
-| [Deepr](https://github.com/yogeshpaliyal/Deepr) | v1.0.30 | 7,793 | – | 302 | 0 |
-| [KeyPass](https://github.com/yogeshpaliyal/KeyPass) | v1.4.42 | 4,715 | – | 789 | 0 |
-| [skiff](https://github.com/yogeshpaliyal/skiff) | v1.11.1 | 893 | – | 70 | 0 |
-| [Halo](https://github.com/yogeshpaliyal/Halo) | v0.1.7 | 545 | +354 | 15 | 593 |
+| [Deepr](https://github.com/yogeshpaliyal/Deepr) | v1.0.30 | 7,805 | +427 | 302 | 0 |
+| [KeyPass](https://github.com/yogeshpaliyal/KeyPass) | v1.4.42 | 4,717 | +30 | 789 | 0 |
+| [skiff](https://github.com/yogeshpaliyal/skiff) | v1.11.1 | 899 | +249 | 70 | 0 |
+| [Halo](https://github.com/yogeshpaliyal/Halo) | v0.1.7 | 545 | +183 | 15 | 593 |
 | [Marky](https://github.com/yogeshpaliyal/Marky) | – | 67 | – | 17 | 0 |
 | [Whatsapp-scheduler](https://github.com/yogeshpaliyal/Whatsapp-scheduler) | – | 4 | – | 0 | 0 |
 | [dwr-sync](https://github.com/yogeshpaliyal/dwr-sync) | – | 3 | – | 1 | 0 |
-| [chain-reaction](https://github.com/yogeshpaliyal/chain-reaction) | v0.0.1-alpha01 | 1 | – | 3 | 0 |
+| [chain-reaction](https://github.com/yogeshpaliyal/chain-reaction) | v0.0.1-alpha01 | 1 | +1 | 3 | 0 |
 | [awesome-mobile-system-design](https://github.com/yogeshpaliyal/awesome-mobile-system-design) | – | – | – | 184 | 0 |
 | [android-resources](https://github.com/yogeshpaliyal/android-resources) | – | – | – | 71 | 0 |
 | [awesome-android-tooling](https://github.com/yogeshpaliyal/awesome-android-tooling) | – | – | – | 71 | 0 |
