@@ -4,7 +4,7 @@ Downloads, stars and traffic for all of my GitHub projects. Updated 2026-11-19 (
 
 | Total downloads | Last 7 days | Stars | Page views, last 14 days |
 | --- | --- | --- | --- |
-| **14k** | +890 | 1,784 | 593 |
+| **14.1k** | +944 | 1,784 | 593 |
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="charts/downloads-over-time-dark.svg"><img alt="Total downloads over time per project" src="charts/downloads-over-time-light.svg" width="100%"></picture>
 
@@ -18,13 +18,14 @@ Downloads, stars and traffic for all of my GitHub projects. Updated 2026-11-19 (
 
 | Project | Latest release | Downloads | Last 7 days | Stars | Views (14 d) |
 | --- | --- | --: | --: | --: | --: |
-| [Deepr](https://github.com/yogeshpaliyal/Deepr) | v1.0.30 | 7,805 | +427 | 302 | 0 |
-| [KeyPass](https://github.com/yogeshpaliyal/KeyPass) | v1.4.42 | 4,717 | +30 | 789 | 0 |
-| [skiff](https://github.com/yogeshpaliyal/skiff) | v1.11.1 | 899 | +249 | 70 | 0 |
-| [Halo](https://github.com/yogeshpaliyal/Halo) | v0.1.7 | 545 | +183 | 15 | 593 |
+| [Deepr](https://github.com/yogeshpaliyal/Deepr) | v1.0.30 | 7,821 | +443 | 302 | 0 |
+| [KeyPass](https://github.com/yogeshpaliyal/KeyPass) | v1.4.42 | 4,722 | +35 | 788 | 0 |
+| [skiff](https://github.com/yogeshpaliyal/skiff) | v1.11.1 | 917 | +267 | 70 | 0 |
+| [Halo](https://github.com/yogeshpaliyal/Halo) | v0.1.7 | 560 | +198 | 16 | 593 |
 | [Marky](https://github.com/yogeshpaliyal/Marky) | – | 67 | – | 17 | 0 |
 | [Whatsapp-scheduler](https://github.com/yogeshpaliyal/Whatsapp-scheduler) | – | 4 | – | 0 | 0 |
 | [dwr-sync](https://github.com/yogeshpaliyal/dwr-sync) | – | 3 | – | 1 | 0 |
+| [Gapwise](https://github.com/yogeshpaliyal/Gapwise) | – | 2 | – | 0 | 0 |
 | [chain-reaction](https://github.com/yogeshpaliyal/chain-reaction) | v0.0.1-alpha01 | 1 | +1 | 3 | 0 |
 | [awesome-mobile-system-design](https://github.com/yogeshpaliyal/awesome-mobile-system-design) | – | – | – | 184 | 0 |
 | [android-resources](https://github.com/yogeshpaliyal/android-resources) | – | – | – | 71 | 0 |
@@ -67,6 +68,6 @@ Downloads, stars and traffic for all of my GitHub projects. Updated 2026-11-19 (
 | [yogeshpaliyal.com](https://github.com/yogeshpaliyal/yogeshpaliyal.com) | – | – | – | 1 | 0 |
 | [yogeshpaliyal.github.io](https://github.com/yogeshpaliyal/yogeshpaliyal.github.io) | – | – | – | 1 | 0 |
 
-<sub>Also tracked, no activity yet: ghumanlawassociates, Gridmark, MiniProjects, project-stats, supabaseSample.</sub>
+<sub>Also tracked, no activity yet: ghumanlawassociates, Gridmark, MiniProjects, project-stats, SendAhead, supabaseSample.</sub>
 
 <sub>Downloads count every file attached to GitHub releases. A rolling build that gets replaced keeps its earlier downloads, but downloads between two snapshots of a replaced file can be missed. Raw data is in the CSV files next to this README.</sub>
