@@ -4,7 +4,7 @@ Downloads, stars and traffic for all of my GitHub projects. Updated 2026-11-24 (
 
 | Total downloads | Last 7 days | Stars | Page views, last 14 days |
 | --- | --- | --- | --- |
-| **14.5k** | +493 | 1,800 | 349 |
+| **14.6k** | +560 | 1,804 | 349 |
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="charts/downloads-over-time-dark.svg"><img alt="Total downloads over time per project" src="charts/downloads-over-time-light.svg" width="100%"></picture>
 
@@ -18,13 +18,13 @@ Downloads, stars and traffic for all of my GitHub projects. Updated 2026-11-24 (
 
 | Project | Latest release | Downloads | Last 7 days | Stars | Views (14 d) |
 | --- | --- | --: | --: | --: | --: |
-| [Deepr](https://github.com/yogeshpaliyal/Deepr) | v1.0.30 | 7,923 | +171 | 306 | 0 |
-| [KeyPass](https://github.com/yogeshpaliyal/KeyPass) | v1.4.42 | 4,759 | +47 | 788 | 0 |
-| [skiff](https://github.com/yogeshpaliyal/skiff) | v1.11.1 | 987 | +111 | 72 | 0 |
-| [Halo](https://github.com/yogeshpaliyal/Halo) | v0.1.8 | 680 | +162 | 23 | 349 |
+| [Deepr](https://github.com/yogeshpaliyal/Deepr) | v1.0.30 | 7,929 | +177 | 306 | 0 |
+| [KeyPass](https://github.com/yogeshpaliyal/KeyPass) | v1.4.42 | 4,761 | +49 | 788 | 0 |
+| [skiff](https://github.com/yogeshpaliyal/skiff) | v1.11.1 | 1,017 | +141 | 73 | 0 |
+| [Halo](https://github.com/yogeshpaliyal/Halo) | v0.1.8 | 709 | +191 | 25 | 349 |
 | [Marky](https://github.com/yogeshpaliyal/Marky) | – | 67 | – | 17 | 0 |
-| [GapWise](https://github.com/yogeshpaliyal/GapWise) | v0.4.0 | 51 | – | 0 | 0 |
-| [SendAhead](https://github.com/yogeshpaliyal/SendAhead) | v0.2.0 | 9 | – | 0 | 0 |
+| [GapWise](https://github.com/yogeshpaliyal/GapWise) | v0.4.0 | 52 | – | 1 | 0 |
+| [SendAhead](https://github.com/yogeshpaliyal/SendAhead) | v0.2.0 | 11 | – | 0 | 0 |
 | [dwr-sync](https://github.com/yogeshpaliyal/dwr-sync) | – | 5 | +2 | 1 | 0 |
 | [Whatsapp-scheduler](https://github.com/yogeshpaliyal/Whatsapp-scheduler) | – | 4 | – | 0 | 0 |
 | [Gapwise](https://github.com/yogeshpaliyal/Gapwise) | – | 2 | – | 0 | 0 |
