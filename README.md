@@ -1,10 +1,10 @@
 # Project stats
 
-Downloads, stars and traffic for all of my GitHub projects. Updated 2026-11-27 (UTC) by the `Collect stats` workflow from GitHub's APIs.
+Downloads, stars and traffic for all of my GitHub projects. Updated 2026-11-28 (UTC) by the `Collect stats` workflow from GitHub's APIs.
 
 | Total downloads | Last 7 days | Stars | Page views, last 14 days |
 | --- | --- | --- | --- |
-| **14.9k** | +690 | 1,808 | 0 |
+| **14.9k** | +646 | 1,807 | 0 |
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="charts/downloads-over-time-dark.svg"><img alt="Total downloads over time per project" src="charts/downloads-over-time-light.svg" width="100%"></picture>
 
@@ -18,14 +18,14 @@ Downloads, stars and traffic for all of my GitHub projects. Updated 2026-11-27 (
 
 | Project | Latest release | Downloads | Last 7 days | Stars | Views (14 d) |
 | --- | --- | --: | --: | --: | --: |
-| [Deepr](https://github.com/yogeshpaliyal/Deepr) | v1.0.30 | 7,990 | +137 | 307 | 0 |
-| [KeyPass](https://github.com/yogeshpaliyal/KeyPass) | v1.4.42 | 4,781 | +52 | 788 | 0 |
-| [skiff](https://github.com/yogeshpaliyal/skiff) | v1.11.1 | 1,066 | +135 | 73 | 0 |
-| [Halo](https://github.com/yogeshpaliyal/Halo) | v0.1.11 | 904 | +332 | 28 | 0 |
+| [Deepr](https://github.com/yogeshpaliyal/Deepr) | v1.0.30 | 7,996 | +117 | 307 | 0 |
+| [KeyPass](https://github.com/yogeshpaliyal/KeyPass) | v1.4.42 | 4,781 | +51 | 788 | 0 |
+| [skiff](https://github.com/yogeshpaliyal/skiff) | v1.11.1 | 1,078 | +130 | 73 | 0 |
+| [Halo](https://github.com/yogeshpaliyal/Halo) | v0.1.11 | 920 | +334 | 27 | 0 |
 | [Marky](https://github.com/yogeshpaliyal/Marky) | – | 68 | +1 | 17 | 0 |
-| [GapWise](https://github.com/yogeshpaliyal/GapWise) | v0.4.0 | 55 | +25 | 1 | 0 |
+| [GapWise](https://github.com/yogeshpaliyal/GapWise) | v0.4.0 | 56 | +7 | 1 | 0 |
 | [SendAhead](https://github.com/yogeshpaliyal/SendAhead) | v0.2.0 | 13 | +6 | 0 | 0 |
-| [dwr-sync](https://github.com/yogeshpaliyal/dwr-sync) | – | 5 | +2 | 1 | 0 |
+| [dwr-sync](https://github.com/yogeshpaliyal/dwr-sync) | – | 5 | – | 1 | 0 |
 | [Whatsapp-scheduler](https://github.com/yogeshpaliyal/Whatsapp-scheduler) | – | 4 | – | 0 | 0 |
 | [Gapwise](https://github.com/yogeshpaliyal/Gapwise) | – | 2 | – | 0 | 0 |
 | [chain-reaction](https://github.com/yogeshpaliyal/chain-reaction) | v0.0.1-alpha01 | 1 | – | 3 | 0 |
